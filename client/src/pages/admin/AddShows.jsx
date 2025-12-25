@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { dummyShowsData } from '../../assets/assets'
 import Loader from '../../components/Loader'
 import Title from '../../components/admin/Title'
 import { CheckIcon, StarIcon } from 'lucide-react'
 import { kConverter } from '../../lib/kConverter.js'
+import axios from 'axios';
 
 const AddShows = () => {
     const currency = import.meta.env.VITE_CURRENCY
@@ -15,7 +15,8 @@ const AddShows = () => {
     const [showPrice, setShowPrice] = useState('')
 
     const fetchNowPlayingMovies = async () => {
-        setnowPlayingMovies(dummyShowsData)
+        const response = await axios.get('http://localhost:5000/api/shows/now-playing');
+        setnowPlayingMovies(response.data.movies);
     }
 
     const handleDateTimeAdd = () => {
@@ -58,7 +59,7 @@ const AddShows = () => {
                             onClick={() => { setSelectedMovie(movie.id) }}
                             className={`relative max-w-40 cursor-pointer group-hover:not-hover:opacity-40 hover:translate-y-1 transition duration-300`}>
                             <div className='relative rounded-lg overflow-hidden'>
-                                <img src={movie.poster_path} alt="" className='w-full object-cover brightness-90' />
+                                <img src={`https://media.themoviedb.org/t/p/w600_and_h900_face${movie.poster_path}`} alt="" className='w-full object-cover brightness-90' />
                                 <div className='text-sm flex items-center justify-between p-2 bg-black/70 w-full absolute bottom-0 left-0'>
                                     <p className='flex items-center gap-1 text-gray-400'>
                                         <StarIcon className='w-4 h-4 text-primary fill-primary' />
